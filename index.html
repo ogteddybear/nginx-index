@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to nginx!</title>
+    <link rel="stylesheet" href="https://cdn.sashimi.zip/cdnjs/cdnjs/master/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <script src="https://cdn.sashimi.zip/cdnjs/cdnjs/master/ajax/libs/htmx/2.0.0/htmx.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-dark: #1e293b;
+            --accent: #38bdf8;
+            --text-main: #f1f5f9;
+        }
+
+        body { 
+            background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+            color: var(--text-main);
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center;
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+        }
+        
+        .card {
+            background: var(--card-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.25rem;
+            min-height: 320px;
+        }
+
+        /* Simpler, more robust animation:
+           Content starts at 0 opacity and fades in when HTMX swaps it.
+        */
+        #content-target {
+            opacity: 0;
+            transition: opacity 0.4s ease-in;
+        }
+
+        /* HTMX class applied during the settling phase */
+        .htmx-settling #content-target {
+            opacity: 1;
+        }
+        
+        /* Final state */
+        #content-target:not(:empty) {
+            opacity: 1;
+        }
+
+        .htmx-indicator { display: none; }
+        .htmx-request .htmx-indicator { display: block; }
+        .htmx-request #content-target { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center">
+        <div class="card p-5 col-md-8 col-lg-6 shadow-lg" 
+             hx-get="content.html" 
+             hx-trigger="load" 
+             hx-target="#content-target"
+             hx-swap="innerHTML">
+             
+             <div class="htmx-indicator text-center py-5">
+                 <div class="spinner-border text-primary" role="status"></div>
+                 <div class="mt-2 text-muted small">Loading configuration...</div>
+             </div>
+
+             <div id="content-target"></div>
+        </div>
+    </div>
+</body>
+</html>
